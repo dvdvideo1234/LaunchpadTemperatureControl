@@ -13,6 +13,7 @@
 
 u8  ucStart = 0;
 u16 uiAdcVL = 0;
+
 void main(void)
 {
   wdtStop();
