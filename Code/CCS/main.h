@@ -33,9 +33,8 @@ void gpioInPin(u8 ucPin, u8 ucIE)
 
 void gpioSet(u8 ucPin, u8 ucState)
 {
-	// Set 1 for HIGH, 0 for LOW
 	if(ucState)
-  {
+  { // Set 1 for HIGH, 0 for LOW
     P1OUT |= ucPin;
   }
 	else
@@ -53,13 +52,15 @@ void gpioGet(u8 ucPin)
 void adcReset(void)
 {
   ADC10CTL0 = 0x0000;
+  ADC10CTL1 = 0x0000;
   ADC10AE0  = 0x0000;
 }
 
 void adcInitSingleOnce(u8 ucPin, u8 ucChan, u8 ucIE)
 {
-  P1SEL     |=  ucPin;     // Special Input
-  P1DIR     &= ~ucPin;     // Special Input
+  adcReset();
+  P1SEL     |=  ucPin;     // Special input
+  P1DIR     &= ~ucPin;     // Direction input
   ADC10CTL0 |= SREF_0;     // VR+ = AVCC and VR- = AVSS  3.6-0 [V]
   ADC10CTL0 |= ADC10SHT0;  // Sample and hold mode
   ADC10CTL0 |= ADC10SHT_2; // Conversion time: 16 x ADC10CLKs    
@@ -85,12 +86,23 @@ u8 adcIsBusy(void)
   return 0x00;
 }
 
-u16 adcGetValue(void)
+u16 adcRead(void)
 {
   ADC10CTL0 |= ENC;        // Enable conversion
   ADC10CTL0 |= ADC10SC;    // Start conversion
   while(adcIsBusy());
   return ADC10MEM;
+}
+
+u16 adcReadChannel(u16 ucChan)
+{
+	ADC10CTL0 &= ~ENC; 				         // Disable ADC 
+	ADC10CTL0  = ADC10SHT_2 + ADC10ON; // Use 16 clocks and start
+	ADC10CTL1  = ADC10SSEL_2;          // Clock from MCLK
+  ADC10CTL1 |= ucChan;               // Select channel
+	ADC10CTL0 |= ENC + ADC10SC; 			 // Enable and start conversion
+	while(adcIsBusy());		 // Wait for conversion
+	return ADC10MEM;
 }
 
 void timerReset(void)
@@ -101,6 +113,7 @@ void timerReset(void)
 
 void timerInitPWM(u8 ucPin)
 {
+  timerReset();
   P1DIR |= ucPin;             // Configure Pin
   P1SEL |= ucPin;             // Configure Pin Special
   TACTL |= MC_1;              // Counts up ( Up mode 0-CCR0 )
@@ -120,4 +133,3 @@ void timerSetDutyPWM(u16 uiDuty)
     CCR1 = uiDuty-1; // CCR1 PWM duty cycle
   }
 }
-
