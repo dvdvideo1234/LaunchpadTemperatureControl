@@ -17,16 +17,15 @@ u16 uiAdcVL = 0;
 void main(void)
 {
   wdtStop();
-  // Reset registers
-  gpioReset();
-  adcReset();
-  timerReset();
   // Configure the GPIO
+  gpioReset();
   gpioOutPin(PIN_KOEF_LED);
   gpioInPin(PIN_BT_KOEF_U | PIN_BT_KOEF_D,0);
   // Configure the ADC
+  adcReset();
   adcInitSingleOnce(PIN_AN_TEMP,INCH_5,0)
   // Configure the PWM
+  timerReset();
   timerInitPWM(PIN_PWM_FAN)
   timerSetPeriodPWM(1000)
   timerSetDutyPWM(250)

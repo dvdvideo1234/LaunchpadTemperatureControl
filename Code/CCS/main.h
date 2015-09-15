@@ -58,7 +58,6 @@ void adcReset(void)
 
 void adcInitSingleOnce(u8 ucPin, u8 ucChan, u8 ucIE)
 {
-  adcReset();
   P1SEL     |=  ucPin;     // Special input
   P1DIR     &= ~ucPin;     // Direction input
   ADC10CTL0 |= SREF_0;     // VR+ = AVCC and VR- = AVSS  3.6-0 [V]
@@ -113,7 +112,6 @@ void timerReset(void)
 
 void timerInitPWM(u8 ucPin)
 {
-  timerReset();
   P1DIR |= ucPin;             // Configure Pin
   P1SEL |= ucPin;             // Configure Pin Special
   TACTL |= MC_1;              // Counts up ( Up mode 0-CCR0 )
