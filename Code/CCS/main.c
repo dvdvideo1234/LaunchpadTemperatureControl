@@ -13,9 +13,11 @@ void main(void)
   setSystemCLK(CALBC1_12MHZ);
   // Configure the GPIO
   gpioOutPin(PIN_KOEF_LED);
+  /*
   gpioInPin(PIN_BT_KOEF_U + PIN_BT_KOEF_D);
+  */
   // Configure the ADC
-  adcInitSingleOnce(PIN_AN_TEMP,INCH_5,0);
+  adcInitSingleOnce(PIN_AN_TEMP,INCH_5);
   // Configure the PWM
   /*
   timerInitPWM(PIN_PWM_FAN);
@@ -27,8 +29,7 @@ void main(void)
   for(;;)
   {
     uiAdcVL = adcRead();
-    // timerSetDutyPWM(uiAdcVL);
-    if(gpioGet(PIN_BT_KOEF_U))
+    if(uiAdcVL < 287)
     {
       gpioSet(PIN_KOEF_LED,1);
     }
@@ -36,7 +37,6 @@ void main(void)
     {
       gpioSet(PIN_KOEF_LED,0);
     }
-    // if(uiDuty >= PWM_PERIOD){ uiDuty = 0; }
   }
 }
 
@@ -60,6 +60,12 @@ __interrupt void Port_1(void)
 
 #pragma vector=ADC10_VECTOR
 __interrupt void ADC10_ISR (void)
+{
+
+}
+
+#pragma vector = WDT_VECTOR
+__interrupt void WDT_ISR(void)
 {
 
 }

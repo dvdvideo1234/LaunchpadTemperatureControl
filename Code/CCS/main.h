@@ -12,3 +12,4 @@
 #define PIN_BT_KOEF_D BIT4
 #define PIN_KOEF_LED  BIT0
 #define PWM_PERIOD 1000
+

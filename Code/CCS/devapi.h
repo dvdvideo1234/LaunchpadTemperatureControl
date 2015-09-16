@@ -58,19 +58,18 @@ void adcReset(void)
   ADC10AE0  = 0x0000;
 }
 
-void adcInitSingleOnce(u8 ucPin, u8 ucChan, u8 ucIE)
+void adcInitSingleOnce(u8 ucPin, u16 uiChan)
 {
-  P1SEL     |=  ucPin;          // Special input
-  P1DIR     &= ~ucPin;          // Direction input
+  // Port P1 ADC Analogue Pin Functions
+  ADC10AE0  |= ucPin;           // Physical Pin select for analogue
   ADC10CTL0 |= SREF_0;          // VR+ = AVCC and VR- = AVSS  3.6-0 [V]
   ADC10CTL0 |= ADC10SHT0;       // Sample and hold mode
   ADC10CTL0 |= ADC_CLK_SAMPLE;  // Conversion time: 16 x ADC10CLKs
-  ADC10CTL0 |= ADC10IFG;        // Enable Interript falg 
+  ADC10CTL0 |= ADC10IFG;        // Enable Interrupt flag 
   ADC10CTL0 |= ADC10IE;         // Interrupt Enable
   ADC10CTL0 |= ADC10ON;         // On/Enable
-  ADC10AE0  |= ucPin;           // Physical Pin select for analogue
-  ADC10CTL1 |= ucChan;          // Select ADC Channel
-  ADC10CTL1 |= SHS_0;           // Source from > Start convertion
+  ADC10CTL1 |= uiChan;          // Select ADC Channel
+  ADC10CTL1 |= SHS_0;           // Source from > Start conversion
   ADC10CTL1 |= ADC10DIV_0;      // Clock divider _[ 0 ]
   ADC10CTL1 |= ADC10SSEL_2;     // Clock comes from MCLK
   ADC10CTL1 |= CONSEQ_0;        // Single channel single conversion
@@ -89,12 +88,12 @@ u16 adcRead(void)
   return ADC10MEM;
 }
 
-u16 adcReadChannel(u16 ucChan)
+u16 adcReadChannel(u16 uiChan)
 {
   ADC10CTL0 &= ~ENC;                   // Disable ADC
   ADC10CTL0  = ADC_CLK_SAMPLE + ADC10ON;   // Use 16 clocks and start
   ADC10CTL1  = ADC10SSEL_2;            // Clock from MCLK
-  ADC10CTL1 |= ucChan;                 // Select channel
+  ADC10CTL1 |= uiChan;                 // Select channel
   ADC10CTL0 |= ENC + ADC10SC;          // Enable and start conversion
   while(adcIsBusy());                  // Wait for conversion
   return ADC10MEM;
@@ -108,7 +107,8 @@ void timerReset(void)
 
 void timerInitPWM(u8 ucPin)
 {
-  P1DIR |= ucPin;             // Configure Pin
+  // Port P1 Timer Pin Functions
+  P1DIR |= ucPin;             // Configure Pin output
   P1SEL |= ucPin;             // Configure Pin Special
   TACTL |= MC_1;              // Counts up ( Up mode 0-CCR0 )
   TACTL |= TASSEL_2;          // Clock SMCLK
@@ -127,3 +127,4 @@ void timerSetDutyPWM(u16 uiDuty)
     CCR1 = uiDuty-1; // CCR1 PWM duty cycle
   }
 }
+
