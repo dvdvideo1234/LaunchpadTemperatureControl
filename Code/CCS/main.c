@@ -1,29 +1,16 @@
-#include "msp430G2231.h"
-#include "mytypes.h"
 #include "main.h"
-
-// PWM output on P1.5 ( TA0.1 )
-#define PIN_PWM_FAN BIT6
-// Sensor input on P1.5 ( A5 )
-#define PIN_AN_TEMP BIT5
-// Coefficient monitor and control
-#define PIN_BT_KOEF_U BIT3
-#define PIN_BT_KOEF_D BIT4
-#define PIN_KOEF_LED  BIT0
-#define PWM_PERIOD 1000
 
 u8  ucStart = 0;
 u16 uiAdcVL = 0;
 u8  ucKoefU = 0;
 u16 uiDuty  = 0;
 
-
 void main(void)
 {
-  gpioReset();
-  adcReset();
-  timerReset();
+  // Stop the bull-dog
   wdtStop();
+  // Adjust CPU Clock CALBC1_16MHZ;
+  setSystemCLK(CALBC1_12MHZ);
   // Configure the GPIO
   gpioOutPin(PIN_KOEF_LED);
   gpioInPin(PIN_BT_KOEF_U + PIN_BT_KOEF_D);
@@ -40,7 +27,7 @@ void main(void)
   for(;;)
   {
     uiAdcVL = adcRead();
-    timerSetDutyPWM(uiAdcVL);
+    // timerSetDutyPWM(uiAdcVL);
     if(gpioGet(PIN_BT_KOEF_U))
     {
       gpioSet(PIN_KOEF_LED,1);
