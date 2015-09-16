@@ -1,5 +1,7 @@
 #include "main.h"
 
+#define V1_11 320
+
 u8  ucStart = 0;
 u16 uiAdcVL = 0;
 u8  ucKoefU = 0;
@@ -10,26 +12,24 @@ void main(void)
   // Stop the bull-dog
   wdtStop();
   // Adjust CPU Clock CALBC1_16MHZ;
-  setSystemCLK(CALBC1_12MHZ);
+  // setSystemCLK(CALBC1_12MHZ);
   // Configure the GPIO
   gpioOutPin(PIN_KOEF_LED);
-  /*
   gpioInPin(PIN_BT_KOEF_U + PIN_BT_KOEF_D);
-  */
   // Configure the ADC
   adcInitSingleOnce(PIN_AN_TEMP,INCH_5);
   // Configure the PWM
-  /*
   timerInitPWM(PIN_PWM_FAN);
   timerSetPeriodPWM(PWM_PERIOD);
   timerSetDutyPWM(uiDuty);
-  */
+
   ucStart = 0xff;
   
   for(;;)
   {
     uiAdcVL = adcRead();
-    if(uiAdcVL < 287)
+    ucKoefU = gpioGet(PIN_BT_KOEF_U);
+    if((uiAdcVL < V1_11) && ucKoefU)
     {
       gpioSet(PIN_KOEF_LED,1);
     }
@@ -37,6 +37,7 @@ void main(void)
     {
       gpioSet(PIN_KOEF_LED,0);
     }
+    timerSetDutyPWM(uiAdcVL);
   }
 }
 

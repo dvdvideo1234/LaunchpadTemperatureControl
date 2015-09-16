@@ -33,23 +33,22 @@ void gpioInPin(u8 ucPin)
 {
   P1SEL &= ~ucPin;  // Not special
   P1DIR &= ~ucPin;  // Configure is an input
-  P1OUT |= ucPin;   // pull-up resistor
-  P1REN |= ucPin;   // resistor enabled
-  P1IES |= ucPin;   // interrupt on low-to-high transition
-  P1IE  |= ucPin;   // interrupt enable
+  P1OUT |=  ucPin;  // pull-up resistor
+  P1REN |=  ucPin;  // resistor enabled
+  P1IES |=  ucPin;  // interrupt on low-to-high transition
+  P1IE  |=  ucPin;  // interrupt enable
 }
 
 void gpioSet(u8 ucPin, u8 ucState)
 {
   // Set 1 for HIGH, 0 for LOW
-  if(ucState){ P1OUT |= ucPin;  }
+  if(ucState){ P1OUT |=  ucPin; }
   else       { P1OUT &= ~ucPin; }
 }
 
 u8 gpioGet(u8 ucPin)
 {
-  if((P1IN & ucPin) != 0){ return 0xff; }
-  return 0x00;
+  return !(P1IN & ucPin);
 }
 
 void adcReset(void)
@@ -92,7 +91,7 @@ u16 adcRead(void)
 u16 adcReadChannel(u16 uiChan)
 {
   ADC10CTL0 &= ~ENC;               // Disable ADC
-  ADC10CTL0 |=  ADC_CLK_SAMPLE     // Use ADC_CLK_SAMPLE clocks
+  ADC10CTL0 |=  ADC_CLK_SAMPLE;    // Use ADC_CLK_SAMPLE clocks
   ADC10CTL0 |=  ADC10ON;           // Start the device
   ADC10CTL1  =  ADC10SSEL_2;       // Clock from MCLK
   ADC10CTL1 |=  uiChan;            // Select channel

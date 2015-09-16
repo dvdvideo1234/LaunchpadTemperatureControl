@@ -9,7 +9,7 @@
     {
       while(uiCount--)
       {
-        while(uiTimes--)
+        while(uiTimes--);
       }
     }
 #endif
