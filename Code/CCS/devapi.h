@@ -24,14 +24,15 @@ void gpioReset(void)
 
 void gpioOutPin(u8 ucPin)
 {
-  P1DIR |= ucPin;
+  P1SEL &= ~ucPin; // Not special
+  P1DIR |=  ucPin; // Configure is an output
   P1OUT &= ~ucPin;
 }
 
 void gpioInPin(u8 ucPin)
 {
   P1SEL &= ~ucPin;  // Not special
-  P1DIR &= ~ucPin;  // button is an input
+  P1DIR &= ~ucPin;  // Configure is an input
   P1OUT |= ucPin;   // pull-up resistor
   P1REN |= ucPin;   // resistor enabled
   P1IES |= ucPin;   // interrupt on low-to-high transition
@@ -62,7 +63,7 @@ void adcInitSingleOnce(u8 ucPin, u16 uiChan)
 {
   // Port P1 ADC Analogue Pin Functions
   ADC10AE0  |= ucPin;           // Physical Pin select for analogue
-  ADC10CTL0 |= SREF_0;          // VR+ = AVCC and VR- = AVSS  3.6-0 [V]
+  ADC10CTL0 |= SREF_0;          // VR+ = AVCC [3.6V] and VR- = AVSS [0V]
   ADC10CTL0 |= ADC10SHT0;       // Sample and hold mode
   ADC10CTL0 |= ADC_CLK_SAMPLE;  // Conversion time: 16 x ADC10CLKs
   ADC10CTL0 |= ADC10IFG;        // Enable Interrupt flag 
@@ -90,12 +91,14 @@ u16 adcRead(void)
 
 u16 adcReadChannel(u16 uiChan)
 {
-  ADC10CTL0 &= ~ENC;                   // Disable ADC
-  ADC10CTL0  = ADC_CLK_SAMPLE + ADC10ON;   // Use 16 clocks and start
-  ADC10CTL1  = ADC10SSEL_2;            // Clock from MCLK
-  ADC10CTL1 |= uiChan;                 // Select channel
-  ADC10CTL0 |= ENC + ADC10SC;          // Enable and start conversion
-  while(adcIsBusy());                  // Wait for conversion
+  ADC10CTL0 &= ~ENC;               // Disable ADC
+  ADC10CTL0 |=  ADC_CLK_SAMPLE     // Use ADC_CLK_SAMPLE clocks
+  ADC10CTL0 |=  ADC10ON;           // Start the device
+  ADC10CTL1  =  ADC10SSEL_2;       // Clock from MCLK
+  ADC10CTL1 |=  uiChan;            // Select channel
+  ADC10CTL0 |=  ENC;               // Enable conversion
+  ADC10CTL0 |=  ADC10SC;           // Start conversion
+  while(adcIsBusy());              // Wait for conversion
   return ADC10MEM;
 }
 
