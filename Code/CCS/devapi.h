@@ -1,8 +1,6 @@
 #define ADC_RESOLUTION 0x3ff
 #define PWM_RESOLUTION 0xffff   
 #define POWER_VCC 353
-// How many cycles to convert the value ( 16 )
-#define ADC_CLK_SAMPLE ADC10SHT_2
 
 void setSystemCLK(u16 uiClk)
 {
@@ -64,7 +62,7 @@ void adcInitSingleOnce(u8 ucPin, u16 uiChan)
   ADC10AE0  |= ucPin;           // Physical Pin select for analogue
   ADC10CTL0 |= SREF_0;          // VR+ = AVCC [3.6V] and VR- = AVSS [0V]
   ADC10CTL0 |= ADC10SHT0;       // Sample and hold mode
-  ADC10CTL0 |= ADC_CLK_SAMPLE;  // Conversion time: 16 x ADC10CLKs
+  ADC10CTL0 |= ADC10SHT_2;      // Conversion time: 16 x ADC10CLKs
   ADC10CTL0 |= ADC10IFG;        // Enable Interrupt flag 
   ADC10CTL0 |= ADC10IE;         // Interrupt Enable
   ADC10CTL0 |= ADC10ON;         // On/Enable
@@ -84,16 +82,20 @@ u16 adcRead(void)
 {
   ADC10CTL0 |= ENC;        // Enable conversion
   ADC10CTL0 |= ADC10SC;    // Start conversion
-  while(adcIsBusy());
+  while(adcIsBusy());      // Wait for conversion
   return ADC10MEM;
+}
+
+void adcResetChannels(void)
+{
+  ADC10CTL1 &= ~(INCH_0 | INCH_1 | INCH_2 | INCH_3 | INCH_4 | INCH_5 | INCH_6 | INCH_7);
 }
 
 u16 adcReadChannel(u16 uiChan)
 {
-  ADC10CTL0 &= ~ENC;               // Disable ADC
-  ADC10CTL0 |=  ADC_CLK_SAMPLE;    // Use ADC_CLK_SAMPLE clocks
+  ADC10CTL0 &= ~ENC;               // Disable conversion
   ADC10CTL0 |=  ADC10ON;           // Start the device
-  ADC10CTL1  =  ADC10SSEL_2;       // Clock from MCLK
+  adcResetChannels();              // Reset all to select one
   ADC10CTL1 |=  uiChan;            // Select channel
   ADC10CTL0 |=  ENC;               // Enable conversion
   ADC10CTL0 |=  ADC10SC;           // Start conversion

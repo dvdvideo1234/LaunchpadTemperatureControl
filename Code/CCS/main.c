@@ -11,8 +11,6 @@ void main(void)
 {
   // Stop the bull-dog
   wdtStop();
-  // Adjust CPU Clock CALBC1_16MHZ;
-  // setSystemCLK(CALBC1_12MHZ);
   // Configure the GPIO
   gpioOutPin(PIN_KOEF_LED);
   gpioInPin(PIN_BT_KOEF_U + PIN_BT_KOEF_D);
