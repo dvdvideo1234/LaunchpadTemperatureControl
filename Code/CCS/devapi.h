@@ -75,7 +75,7 @@ void adcInitSingleOnce(u8 ucPin, u16 uiChan)
 
 u8 adcIsBusy(void)
 {
-  if(ADC10CTL1 & ADC10BUSY){ return 0xff; } return 0x00;
+  return (ADC10CTL1 & ADC10BUSY);
 }
 
 u16 adcRead(void)
@@ -95,7 +95,7 @@ u16 adcReadChannel(u16 uiChan)
 {
   ADC10CTL0 &= ~ENC;               // Disable conversion
   ADC10CTL0 |=  ADC10ON;           // Start the device
-  adcResetChannels();              // Reset all to select one
+  ADC10CTL1 |=  uiChan;            // Select ADC Channel
   ADC10CTL1 |=  uiChan;            // Select channel
   ADC10CTL0 |=  ENC;               // Enable conversion
   ADC10CTL0 |=  ADC10SC;           // Start conversion
