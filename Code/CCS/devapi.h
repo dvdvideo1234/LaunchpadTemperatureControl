@@ -49,6 +49,18 @@ u8 gpioGet(u8 ucPin)
   return !(P1IN & ucPin);
 }
 
+u8 gpioGetRise(u8 ucPin, u8 *ucOld)
+{
+  u8 ucNew = gpioGet(ucPin);
+  return (ucNew && !(*ucOld));
+}
+
+u8 gpioGetFall(u8 ucPin, u8 *ucOld)
+{
+  u8 ucNew = gpioGet(ucPin);
+  return (*ucOld && !(ucNew));
+}
+
 void adcReset(void)
 {
   ADC10CTL0 = 0x0000;
@@ -60,7 +72,7 @@ void adcInitSingleOnce(u8 ucPin, u16 uiChan)
 {
   // Port P1 ADC Analogue Pin Functions
   ADC10AE0  |= ucPin;           // Physical Pin select for analogue
-  ADC10CTL0 |= SREF_0;          // VR+ = AVCC [3.6V] and VR- = AVSS [0V]
+  ADC10CTL0 |= SREF_0;          // VR+ = VCC [3.6V] and VR- = GND [0V]
   ADC10CTL0 |= ADC10SHT0;       // Sample and hold mode
   ADC10CTL0 |= ADC10SHT_2;      // Conversion time: 16 x ADC10CLKs
   ADC10CTL0 |= ADC10IFG;        // Enable Interrupt flag 
@@ -94,9 +106,8 @@ void adcResetChannels(void)
 u16 adcReadChannel(u16 uiChan)
 {
   ADC10CTL0 &= ~ENC;               // Disable conversion
-  ADC10CTL0 |=  ADC10ON;           // Start the device
   ADC10CTL1 |=  uiChan;            // Select ADC Channel
-  ADC10CTL1 |=  uiChan;            // Select channel
+  ADC10CTL0 |=  ADC10ON;           // Start the device
   ADC10CTL0 |=  ENC;               // Enable conversion
   ADC10CTL0 |=  ADC10SC;           // Start conversion
   while(adcIsBusy());              // Wait for conversion
