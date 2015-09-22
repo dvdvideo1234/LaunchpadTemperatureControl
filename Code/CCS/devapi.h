@@ -74,7 +74,7 @@ void adcInitSingleOnce(u8 ucPin, u16 uiChan)
   ADC10AE0  |= ucPin;           // Physical Pin select for analogue
   ADC10CTL0 |= SREF_0;          // VR+ = VCC [3.6V] and VR- = GND [0V]
   ADC10CTL0 |= ADC10SHT0;       // Sample and hold mode
-  ADC10CTL0 |= ADC10SHT_2;      // Conversion time: 16 x ADC10CLKs
+  ADC10CTL0 |= ADC10SHT_3;      // Conversion time: 16 x ADC10CLKs
   ADC10CTL0 |= ADC10IFG;        // Enable Interrupt flag 
   ADC10CTL0 |= ADC10IE;         // Interrupt Enable
   ADC10CTL0 |= ADC10ON;         // On/Enable
@@ -96,6 +96,17 @@ u16 adcRead(void)
   ADC10CTL0 |= ADC10SC;    // Start conversion
   while(adcIsBusy());      // Wait for conversion
   return ADC10MEM;
+}
+
+u16 adcReadN(u8 ucCnt)
+{
+  u16 uiResult = 0;
+  u8  ucIter   = ucCnt;
+  while(ucIter--)
+  {
+    uiResult += adcRead();
+  }
+  return (uiResult / ucCnt);
 }
 
 void adcResetChannels(void)

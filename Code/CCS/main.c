@@ -1,11 +1,12 @@
 #include "main.h"
 
-#define V1_11 320
+#define KP 5
 
 u8  ucStart = 0;
 u16 uiAdcVL = 0;
 u8  ucKoefU = 0;
 u16 uiDuty  = 0;
+u16 uiZero  = 0;
 
 void main(void)
 {
@@ -16,6 +17,7 @@ void main(void)
   gpioInPin(PIN_BT_KOEF_U + PIN_BT_KOEF_D);
   // Configure the ADC
   adcInitSingleOnce(PIN_AN_TEMP,INCH_5);
+  uiZero = adcReadN(100);
   // Configure the PWM
   timerInitPWM(PIN_PWM_FAN);
   timerSetPeriodPWM(PWM_PERIOD);
@@ -25,17 +27,9 @@ void main(void)
   
   for(;;)
   {
-    uiAdcVL = adcRead();
-    ucKoefU = gpioGet(PIN_BT_KOEF_U);
-    if((uiAdcVL < V1_11) && ucKoefU)
-    {
-      gpioSet(PIN_KOEF_LED,1);
-    }
-    else
-    {
-      gpioSet(PIN_KOEF_LED,0);
-    }
-    timerSetDutyPWM(uiAdcVL);
+    uiAdcVL = adcReadN(25)-uiZero;
+    uiDuty  = uiAdcVL * KP;
+    timerSetDutyPWM(uiDuty);
   }
 }
 
