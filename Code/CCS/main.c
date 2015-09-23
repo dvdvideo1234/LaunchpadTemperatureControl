@@ -1,33 +1,36 @@
 #include "main.h"
 
-#define KP 5
+#define kP 18
 
 u8  ucStart = 0;
-u16 uiAdcVL = 0;
-u8  ucKoefU = 0;
-u16 uiDuty  = 0;
-u16 uiZero  = 0;
+s16 uiAdcVL = 0;
+s16 iDuty   = 0;
+s16 iZero   = 0;
+s16 iErr    = 0;
+s16 vP      = 0;
+s16 iRef    = 300;
+
 
 void main(void)
 {
   // Stop the bull-dog
   wdtStop();
   // Configure the GPIO
-  gpioOutPin(PIN_KOEF_LED);
-  gpioInPin(PIN_BT_KOEF_U + PIN_BT_KOEF_D);
+  gpioOutPin(PIN_FAN_ENB);
   // Configure the ADC
-  adcInitSingleOnce(PIN_AN_TEMP,INCH_5);
-  uiZero = adcReadN(100);
+  adcInitSingleOnce(PIN_ANL_TMP,INCH_5);
+  iZero = adcReadN(100)-20;
   // Configure the PWM
-  timerInitPWM(PIN_PWM_FAN);
+  timerInitPWM(PIN_FAN_PWM);
   timerSetPeriodPWM(PWM_PERIOD);
-  timerSetDutyPWM(uiDuty);
+  timerSetDutyPWM(iDuty);
 
   ucStart = 0xff;
   
   for(;;)
   {
-    uiAdcVL = adcReadN(25)-uiZero;
+    iErr = (adcReadN(25)-iZero) - iRef;
+    vP   = kP * iErr;
     uiDuty  = uiAdcVL * KP;
     timerSetDutyPWM(uiDuty);
   }
