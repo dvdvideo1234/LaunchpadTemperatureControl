@@ -1,51 +1,80 @@
 #include "main.h"
 
-#define kP 18
+#define kP 30
+#define ERR_OFF -10
+#define ERR_CDN 1000
 
-u8  ucStart = 0;
-s16 uiAdcVL = 0;
-s16 iDuty   = 0;
-s16 iZero   = 0;
-s16 iErr    = 0;
-s16 vP      = 0;
-s16 iRef    = 300;
-
+s16 iAdc = 0;
+s16 iDty = 0;
+s16 iErr = 0;
+s16 iRef = 65;
+u16 uTim = 0;
 
 void main(void)
 {
   // Stop the bull-dog
   wdtStop();
   // Configure the GPIO
-  gpioOutPin(PIN_FAN_ENB);
+  gpioOutPin(PIN_FAN_ENB + LED1);
   // Configure the ADC
   adcInitSingleOnce(PIN_ANL_TMP,INCH_5);
-  iZero = adcReadN(100)-20;
   // Configure the PWM
   timerInitPWM(PIN_FAN_PWM);
   timerSetPeriodPWM(PWM_PERIOD);
-  timerSetDutyPWM(iDuty);
+  timerSetDutyPWM(iDty);
 
-  ucStart = 0xff;
-  
+  gpioSet(PIN_FAN_ENB,1);
+
   for(;;)
   {
-    iErr = (adcReadN(25)-iZero) - iRef;
-    vP   = kP * iErr;
-    uiDuty  = uiAdcVL * KP;
-    timerSetDutyPWM(uiDuty);
+    iAdc = (s16)adcReadN(5);
+    iErr = iAdc - iRef;
+    iDty = kP * iErr;
+    // Power On-Off the fan to save power
+    if(uTim)
+    {
+      gpioSet(PIN_FAN_ENB,0);
+      uTim--;
+    }else{
+      gpioSet(PIN_FAN_ENB,1);
+      if(iErr < ERR_OFF)
+      {
+        gpioSet(PIN_FAN_ENB,0);
+        uTim = ERR_CDN;
+      }
+    }
+    // Indicate the error
+    if(iErr < ERR_OFF)
+    {
+      gpioSet(LED1,1);
+    }
+    else
+    {
+      gpioSet(LED1,0);
+    }
+    // Saturate the duty cycle
+    if(iDty <= 0)
+    {
+      iDty = 0;
+    }
+    else if(iDty > (PWM_PERIOD-1))
+    {
+      iDty = (PWM_PERIOD-1);
+    }
+    timerSetDutyPWM(iDty);
   }
 }
 
 #pragma vector = TIMERA0_VECTOR
 __interrupt void Timer_A_0(void)
 {
-  
+
 }
 
 #pragma vector = TIMERA1_VECTOR
 __interrupt void Timer_A_1(void)
 {
-  
+
 }
 
 #pragma vector=PORT1_VECTOR

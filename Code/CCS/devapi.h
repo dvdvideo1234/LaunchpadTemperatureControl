@@ -70,8 +70,8 @@ void adcReset(void)
 
 void adcInitSingleOnce(u8 ucPin, u16 uiChan)
 {
-  // Port P1 ADC Analogue Pin Functions
-  ADC10AE0  |= ucPin;           // Physical Pin select for analogue
+  // Port P1 ADC Analog Pin Functions
+  ADC10AE0  |= ucPin;           // Physical Pin select for analog
   ADC10CTL0 |= SREF_0;          // VR+ = VCC [3.6V] and VR- = GND [0V]
   ADC10CTL0 |= ADC10SHT0;       // Sample and hold mode
   ADC10CTL0 |= ADC10SHT_3;      // Conversion time: 16 x ADC10CLKs

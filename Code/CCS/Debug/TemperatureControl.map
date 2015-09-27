@@ -1,10 +1,10 @@
 ******************************************************************************
                   MSP430 Linker PC v4.1.2                      
 ******************************************************************************
->> Linked Wed Sep 23 22:43:23 2015
+>> Linked Sun Sep 27 21:42:30 2015
 
 OUTPUT FILE NAME:   <TemperatureControl.out>
-ENTRY POINT SYMBOL: "_c_int00"  address: 0000f9a6
+ENTRY POINT SYMBOL: "_c_int00"  address: 0000fa06
 
 
 MEMORY CONFIGURATION
@@ -19,7 +19,7 @@ MEMORY CONFIGURATION
   INFOC                 00001040   00000040  00000000  00000040  RWIX
   INFOB                 00001080   00000040  00000000  00000040  RWIX
   INFOA                 000010c0   00000040  00000000  00000040  RWIX
-  FLASH                 0000f800   000007e0  000002b0  00000530  RWIX
+  FLASH                 0000f800   000007e0  0000030a  000004d6  RWIX
   INT00                 0000ffe0   00000002  00000000  00000002  RWIX
   INT01                 0000ffe2   00000002  00000000  00000002  RWIX
   INT02                 0000ffe4   00000002  00000002  00000000  RWIX
@@ -56,40 +56,40 @@ section   page    origin      length       input sections
                   0000024c    00000002     rts430_eabi.lib : boot.obj (.stack)
                   0000024e    00000030     --HOLE--
 
-.text      0    0000f800    0000029e     
-                  0000f800    0000006c     main.obj (.text:main)
-                  0000f86c    0000005e     rts430_eabi.lib : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
-                  0000f8ca    0000005e                     : autoinit.obj (.text:_auto_init)
-                  0000f928    00000042     main.obj (.text:adcInitSingleOnce)
-                  0000f96a    00000020     main.obj (.text:adcReadN)
-                  0000f98a    0000001c     main.obj (.text:timerInitPWM)
-                  0000f9a6    0000001a     rts430_eabi.lib : boot.obj (.text:_c_int00_noexit)
-                  0000f9c0    0000001a     main.obj (.text:gpioInPin)
-                  0000f9da    00000016     main.obj (.text:adcRead)
-                  0000f9f0    00000016     rts430_eabi.lib : div16u.obj (.text)
-                  0000fa06    00000014                     : mult16.obj (.text)
-                  0000fa1a    00000012                     : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
-                  0000fa2c    00000012                     : memcpy.obj (.text:memcpy)
-                  0000fa3e    00000012     main.obj (.text:timerSetDutyPWM)
-                  0000fa50    00000010     rts430_eabi.lib : epilog.obj (.text)
-                  0000fa60    0000000e     main.obj (.text:gpioOutPin)
-                  0000fa6e    00000008     main.obj (.text:adcIsBusy)
-                  0000fa76    00000008     main.obj (.text:timerSetPeriodPWM)
-                  0000fa7e    00000008     main.obj (.text:wdtStop)
-                  0000fa86    00000006     rts430_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
-                  0000fa8c    00000004                     : pre_init.obj (.text:_system_pre_init)
-                  0000fa90    00000004                     : exit.obj (.text:abort)
-                  0000fa94    00000002     main.obj (.text:ADC10_ISR)
-                  0000fa96    00000002     main.obj (.text:Port_1)
-                  0000fa98    00000002     main.obj (.text:Timer_A_0)
-                  0000fa9a    00000002     main.obj (.text:Timer_A_1)
-                  0000fa9c    00000002     main.obj (.text:WDT_ISR)
+.text      0    0000f800    000002f4     
+                  0000f800    000000cc     main.obj (.text:main)
+                  0000f8cc    0000005e     rts430_eabi.lib : copy_decompress_rle.obj (.text:__TI_decompress_rle_core)
+                  0000f92a    0000005e                     : autoinit.obj (.text:_auto_init)
+                  0000f988    00000042     main.obj (.text:adcInitSingleOnce)
+                  0000f9ca    00000020     main.obj (.text:adcReadN)
+                  0000f9ea    0000001c     main.obj (.text:timerInitPWM)
+                  0000fa06    0000001a     rts430_eabi.lib : boot.obj (.text:_c_int00_noexit)
+                  0000fa20    00000016     main.obj (.text:adcRead)
+                  0000fa36    00000016     rts430_eabi.lib : div16u.obj (.text)
+                  0000fa4c    00000014                     : mult16.obj (.text)
+                  0000fa60    00000012                     : copy_decompress_none.obj (.text:decompress:none:__TI_decompress_none)
+                  0000fa72    00000012                     : memcpy.obj (.text:memcpy)
+                  0000fa84    00000012     main.obj (.text:timerSetDutyPWM)
+                  0000fa96    00000010     main.obj (.text:gpioSet)
+                  0000faa6    00000010     rts430_eabi.lib : epilog.obj (.text)
+                  0000fab6    0000000e     main.obj (.text:gpioOutPin)
+                  0000fac4    00000008     main.obj (.text:adcIsBusy)
+                  0000facc    00000008     main.obj (.text:timerSetPeriodPWM)
+                  0000fad4    00000008     main.obj (.text:wdtStop)
+                  0000fadc    00000006     rts430_eabi.lib : copy_decompress_rle.obj (.text:decompress:rle24:__TI_decompress_rle24)
+                  0000fae2    00000004                     : pre_init.obj (.text:_system_pre_init)
+                  0000fae6    00000004                     : exit.obj (.text:abort)
+                  0000faea    00000002     main.obj (.text:ADC10_ISR)
+                  0000faec    00000002     main.obj (.text:Port_1)
+                  0000faee    00000002     main.obj (.text:Timer_A_0)
+                  0000faf0    00000002     main.obj (.text:Timer_A_1)
+                  0000faf2    00000002     main.obj (.text:WDT_ISR)
 
-.cinit     0    0000fa9e    00000012     
-                  0000fa9e    00000009     (.cinit..data.load) [load image, compression = rle]
-                  0000faa7    00000001     --HOLE-- [fill = 0]
-                  0000faa8    00000004     (__TI_handler_table)
-                  0000faac    00000004     (__TI_cinit_table)
+.cinit     0    0000faf4    00000016     
+                  0000faf4    0000000d     (.cinit..data.load) [load image, compression = rle]
+                  0000fb01    00000001     --HOLE-- [fill = 0]
+                  0000fb02    00000004     (__TI_handler_table)
+                  0000fb06    00000004     (__TI_cinit_table)
 
 PORT1      0    0000ffe4    00000002     
                   0000ffe4    00000002     main.obj (.int02)
@@ -112,13 +112,13 @@ WDT        0    0000fff4    00000002
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 0000faac records: 1, size/record: 4, table size: 4
-	.data: load addr=0000fa9e, load size=00000009 bytes, run addr=00000200, run size=0000000a bytes, compression=rle
+__TI_cinit_table @ 0000fb06 records: 1, size/record: 4, table size: 4
+	.data: load addr=0000faf4, load size=0000000d bytes, run addr=00000200, run size=0000000a bytes, compression=rle
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 0000faa8 records: 2, size/record: 2, table size: 4
+__TI_handler_table @ 0000fb02 records: 2, size/record: 2, table size: 4
 	index: 0, handler: __TI_decompress_rle24
 	index: 1, handler: __TI_decompress_none
 
@@ -134,11 +134,11 @@ address    name
 00000049   ADC10DTC1
 000001b4   ADC10MEM
 000001bc   ADC10SA
-0000fa94   ADC10_ISR
+0000faea   ADC10_ISR
 00000057   BCSCTL1
 00000058   BCSCTL2
 00000053   BCSCTL3
-0000fa90   C$$EXIT
+0000fae6   C$$EXIT
 000010ff   CALBC1_1MHZ
 000010fe   CALDCO_1MHZ
 00000056   DCOCTL
@@ -163,7 +163,7 @@ address    name
 00000029   P2OUT
 0000002f   P2REN
 0000002e   P2SEL
-0000fa96   Port_1
+0000faec   Port_1
 00000172   TACCR0
 00000174   TACCR1
 00000162   TACCTL0
@@ -171,8 +171,8 @@ address    name
 00000160   TACTL
 0000012e   TAIV
 00000170   TAR
-0000fa98   Timer_A_0
-0000fa9a   Timer_A_1
+0000faee   Timer_A_0
+0000faf0   Timer_A_1
 0000007a   USICCTL
 0000007a   USICKCTL
 0000007b   USICNT
@@ -183,56 +183,56 @@ address    name
 0000007d   USISRH
 0000007c   USISRL
 00000120   WDTCTL
-0000fa9c   WDT_ISR
+0000faf2   WDT_ISR
 0000027e   __STACK_END
 00000032   __STACK_SIZE
-0000faac   __TI_CINIT_Base
-0000fab0   __TI_CINIT_Limit
-0000faa8   __TI_Handler_Table_Base
-0000faac   __TI_Handler_Table_Limit
+0000fb06   __TI_CINIT_Base
+0000fb0a   __TI_CINIT_Limit
+0000fb02   __TI_Handler_Table_Base
+0000fb06   __TI_Handler_Table_Limit
 UNDEFED    __TI_INITARRAY_Base
 UNDEFED    __TI_INITARRAY_Limit
 00000001   __TI_args_main
-0000fa1a   __TI_decompress_none
-0000fa86   __TI_decompress_rle24
+0000fa60   __TI_decompress_none
+0000fadc   __TI_decompress_rle24
 00000001   __TI_exit
 ffffffff   __binit__
 ffffffff   __c_args__
-0000f9f0   __mspabi_divu
-0000fa5c   __mspabi_func_epilog_1
-0000fa5a   __mspabi_func_epilog_2
-0000fa58   __mspabi_func_epilog_3
-0000fa56   __mspabi_func_epilog_4
-0000fa54   __mspabi_func_epilog_5
-0000fa52   __mspabi_func_epilog_6
-0000fa50   __mspabi_func_epilog_7
-0000fa06   __mspabi_mpyi
-0000f9f0   __mspabi_remu
-0000f8ca   _auto_init
-0000f9a6   _c_int00
-0000f9a6   _c_int00_noexit
+0000fa36   __mspabi_divu
+0000fab2   __mspabi_func_epilog_1
+0000fab0   __mspabi_func_epilog_2
+0000faae   __mspabi_func_epilog_3
+0000faac   __mspabi_func_epilog_4
+0000faaa   __mspabi_func_epilog_5
+0000faa8   __mspabi_func_epilog_6
+0000faa6   __mspabi_func_epilog_7
+0000fa4c   __mspabi_mpyi
+0000fa36   __mspabi_remu
+0000f92a   _auto_init
+0000fa06   _c_int00
+0000fa06   _c_int00_noexit
 0000fffe   _reset_vector
 0000024c   _stack
-0000fa8c   _system_pre_init
-0000fa90   abort
-0000f928   adcInitSingleOnce
-0000fa6e   adcIsBusy
-0000f9da   adcRead
-0000f96a   adcReadN
+0000fae2   _system_pre_init
+0000fae6   abort
+0000f988   adcInitSingleOnce
+0000fac4   adcIsBusy
+0000fa20   adcRead
+0000f9ca   adcReadN
 ffffffff   binit
-0000f9c0   gpioInPin
-0000fa60   gpioOutPin
+0000fab6   gpioOutPin
+0000fa96   gpioSet
+00000200   iAdc
+00000202   iDty
+00000204   iErr
+00000206   iRef
 0000f800   main
-0000fa2c   memcpy
-0000f98a   timerInitPWM
-0000fa3e   timerSetDutyPWM
-0000fa76   timerSetPeriodPWM
-00000204   ucKoefU
-00000200   ucStart
-00000202   uiAdcVL
-00000206   uiDuty
-00000208   uiZero
-0000fa7e   wdtStop
+0000fa72   memcpy
+0000f9ea   timerInitPWM
+0000fa84   timerSetDutyPWM
+0000facc   timerSetPeriodPWM
+00000208   uTim
+0000fad4   wdtStop
 
 
 GLOBAL SYMBOLS: SORTED BY Symbol Address 
@@ -291,54 +291,54 @@ address    name
 000001b2   ADC10CTL1
 000001b4   ADC10MEM
 000001bc   ADC10SA
-00000200   ucStart
-00000202   uiAdcVL
-00000204   ucKoefU
-00000206   uiDuty
-00000208   uiZero
+00000200   iAdc
+00000202   iDty
+00000204   iErr
+00000206   iRef
+00000208   uTim
 0000024c   _stack
 0000027e   __STACK_END
 000010fe   CALDCO_1MHZ
 000010ff   CALBC1_1MHZ
 0000f800   main
-0000f8ca   _auto_init
-0000f928   adcInitSingleOnce
-0000f96a   adcReadN
-0000f98a   timerInitPWM
-0000f9a6   _c_int00
-0000f9a6   _c_int00_noexit
-0000f9c0   gpioInPin
-0000f9da   adcRead
-0000f9f0   __mspabi_divu
-0000f9f0   __mspabi_remu
-0000fa06   __mspabi_mpyi
-0000fa1a   __TI_decompress_none
-0000fa2c   memcpy
-0000fa3e   timerSetDutyPWM
-0000fa50   __mspabi_func_epilog_7
-0000fa52   __mspabi_func_epilog_6
-0000fa54   __mspabi_func_epilog_5
-0000fa56   __mspabi_func_epilog_4
-0000fa58   __mspabi_func_epilog_3
-0000fa5a   __mspabi_func_epilog_2
-0000fa5c   __mspabi_func_epilog_1
-0000fa60   gpioOutPin
-0000fa6e   adcIsBusy
-0000fa76   timerSetPeriodPWM
-0000fa7e   wdtStop
-0000fa86   __TI_decompress_rle24
-0000fa8c   _system_pre_init
-0000fa90   C$$EXIT
-0000fa90   abort
-0000fa94   ADC10_ISR
-0000fa96   Port_1
-0000fa98   Timer_A_0
-0000fa9a   Timer_A_1
-0000fa9c   WDT_ISR
-0000faa8   __TI_Handler_Table_Base
-0000faac   __TI_CINIT_Base
-0000faac   __TI_Handler_Table_Limit
-0000fab0   __TI_CINIT_Limit
+0000f92a   _auto_init
+0000f988   adcInitSingleOnce
+0000f9ca   adcReadN
+0000f9ea   timerInitPWM
+0000fa06   _c_int00
+0000fa06   _c_int00_noexit
+0000fa20   adcRead
+0000fa36   __mspabi_divu
+0000fa36   __mspabi_remu
+0000fa4c   __mspabi_mpyi
+0000fa60   __TI_decompress_none
+0000fa72   memcpy
+0000fa84   timerSetDutyPWM
+0000fa96   gpioSet
+0000faa6   __mspabi_func_epilog_7
+0000faa8   __mspabi_func_epilog_6
+0000faaa   __mspabi_func_epilog_5
+0000faac   __mspabi_func_epilog_4
+0000faae   __mspabi_func_epilog_3
+0000fab0   __mspabi_func_epilog_2
+0000fab2   __mspabi_func_epilog_1
+0000fab6   gpioOutPin
+0000fac4   adcIsBusy
+0000facc   timerSetPeriodPWM
+0000fad4   wdtStop
+0000fadc   __TI_decompress_rle24
+0000fae2   _system_pre_init
+0000fae6   C$$EXIT
+0000fae6   abort
+0000faea   ADC10_ISR
+0000faec   Port_1
+0000faee   Timer_A_0
+0000faf0   Timer_A_1
+0000faf2   WDT_ISR
+0000fb02   __TI_Handler_Table_Base
+0000fb06   __TI_CINIT_Base
+0000fb06   __TI_Handler_Table_Limit
+0000fb0a   __TI_CINIT_Limit
 0000fffe   _reset_vector
 ffffffff   __binit__
 ffffffff   __c_args__
