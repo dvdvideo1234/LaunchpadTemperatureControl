@@ -1,13 +1,13 @@
 #include "main.h"
 
 #define kP 30
-#define ERR_OFF -10
-#define ERR_CDN 1000
+#define ERR_OFF 0
+#define ERR_CDN 2000
 
 s16 iAdc = 0;
 s16 iDty = 0;
 s16 iErr = 0;
-s16 iRef = 65;
+s16 iRef = 68;
 u16 uTim = 0;
 
 void main(void)
@@ -27,7 +27,7 @@ void main(void)
 
   for(;;)
   {
-    iAdc = (s16)adcReadN(5);
+    iAdc = (s16)adcReadN(15);
     iErr = iAdc - iRef;
     iDty = kP * iErr;
     // Power On-Off the fan to save power
