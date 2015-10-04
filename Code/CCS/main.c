@@ -15,13 +15,13 @@ void main(void)
   // Stop the bull-dog
   wdtStop();
   // Configure the GPIO
-  gpioOutPin(PIN_FAN_ENB + LED1);
+  gpioOutPin(PIN_FAN_ENB + LED_ERR);
   // Configure the ADC
   adcInitSingleOnce(PIN_ANL_TMP,INCH_5);
   // Configure the PWM
   timerInitPWM(PIN_FAN_PWM);
   timerSetPeriodPWM(PWM_PERIOD);
-  timerSetDutyPWM(iDty);
+  timerSetDutyPWM(0);
 
   gpioSet(PIN_FAN_ENB,1);
 
@@ -34,23 +34,25 @@ void main(void)
     if(uTim)
     {
       gpioSet(PIN_FAN_ENB,0);
+      timerSetDutyPWM(0);
       uTim--;
     }else{
       gpioSet(PIN_FAN_ENB,1);
       if(iErr < ERR_OFF)
       {
         gpioSet(PIN_FAN_ENB,0);
+        timerSetDutyPWM(0);
         uTim = ERR_CDN;
       }
     }
     // Indicate the error
     if(iErr < ERR_OFF)
     {
-      gpioSet(LED1,1);
+      gpioSet(LED_ERR,1);
     }
     else
     {
-      gpioSet(LED1,0);
+      gpioSet(LED_ERR,0);
     }
     // Saturate the duty cycle
     if(iDty <= 0)

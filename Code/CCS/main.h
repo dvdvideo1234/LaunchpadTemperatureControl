@@ -7,4 +7,4 @@
 #define PIN_FAN_ENB BIT7  // Start/Stop the fan via GPIO       output P1.7
 #define PIN_ANL_TMP BIT5  // Where the temperature sensor is hooked   P1.5
 #define PWM_PERIOD  1024  // How much the PWM period will be
-#define LED1        BIT0  // Led 1 for debug
+#define LED_ERR     BIT0  // Led 1 for debug
