@@ -59,7 +59,7 @@ void main(void)
     {
       iDty = 0;
     }
-    else if(iDty > (PWM_PERIOD-1))
+    else if(iDty >= PWM_PERIOD)
     {
       iDty = (PWM_PERIOD-1);
     }
